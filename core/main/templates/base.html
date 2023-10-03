@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/icons.css' %}">
+</head>
+    <body>
+        <header>
+            <div class="header_container">
+                <div class="header_content">
+                    <div>
+                        <img src={{ header.logo.url }} alt="logo" />
+                        <h1>{{ header.title }}</h1>
+                    </div>
+                    <nav>
+                        {% block paths %}{% endblock %}
+                    </nav>
+                    <div onclick="burger(event)" class="burger">
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        {% block body %}{% endblock %}
+        <footer>
+            <div class="footer_container">
+                <div class="footer_content">
+                    <h4>Where to find us?</h4>
+                    <p><i class="fa-solid fa-location-dot"></i> {{ footer.address }}</p>
+                    <ul>
+                        <li><a href="{{ footer.social1 }}"><i class="fa-brands fa-facebook"></i></a></li>
+                        <li><a href="{{ footer.social2 }}"><i class="fa-brands fa-twitter"></i></a></li>
+                        <li><a href="{{ footer.social3 }}"><i class="fa-brands fa-whatsapp"></i></a></li>
+                    </ul>
+                    <p>Copyright © Barista Cafe 2048 - Made by: <span>Alex</span></p>
+                </div>
+                <div class="footer_content">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><strong>Phone:</strong> {{ footer.phone }}</li>
+                        <li><strong>Email:</strong> {{ footer.email }}</li>
+                    </ul>
+                </div>
+                <div class="footer_content">
+                    <h4>Opening Hours.</h4>
+                    <ul>
+                        {% for i in open_hours %}
+                            <li>{{ i.day }} <span></span> <strong>{{ i.time }}</strong></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </footer>
+        <script src="{% static 'js/scripts.js' %}"></script>
+        <script>
+            const images = [
+                `{{ home.background1.url }}`,
+                `{{ home.background2.url }}`,
+                `{{ home.background3.url }}`,
+            ]
+            const slider = document.getElementById('home')
+            let item = 0;
+            slider.style.backgroundImage = `url(${images[item]})`
+            setInterval(() => {
+                if(item >= images.length - 1) {
+                    item = 0
+                }
+                else {
+                    item += 1
+                }
+                slider.style.backgroundImage = `url(${images[item]})`
+            }, 3000);
+        </script>
+    </body>
+</html>

@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% block title %}Barista Cafe{% endblock %}
+{% block paths %}
+    <ul>
+        <li><a href="#home">{{ header.path1 }}</a></li>
+        <li><a href="#about">{{ header.path2 }}</a></li>
+        <li><a href="#menu">{{ header.path3 }}</a></li>
+        <li><a href="#review">{{ header.path4 }}</a></li>
+        <li><a href="#contact">{{ header.path5 }}</a></li>
+        <button><a href="reservation">{{ header.path6 }} <i class="fa-solid fa-arrow-right"></i></a></button>
+    </ul>
+{% endblock %}
+{% block body %}
+    <section id="home">
+        <div class="home_content">
+            <h6>{{ home.subtitle }}</h6>
+            <h1>{{ home.title }}</h1>
+            <p>{{ home.text }}</p>
+            <div>
+                <button><a href="#about">{{ home.button1 }}</a></button>
+                <button><a href="#menu">{{ home.button2 }}</a></button>
+            </div>
+        </div>
+    </section>
+    <section id="about">
+        <div class="about_container">
+            <div class="left">
+                <video autoplay loop muted poster>
+                    <source src={{ about.video.url }} />
+                </video>
+                <div>
+                    <h4>{{ about.video_title1 }}<br />{{ about.video_title2 }}</h4>
+                </div>
+            </div>
+            <div class="right">
+                <em>{{ about.subtitle }}</em>
+                <h1>{{ about.title }}</h1>
+                <p>{{ about.text1 }}</p>
+                <br>
+                <p>{{ about.text2 }}</p>
+                <button><a href="#menu">{{ about.button }}</a></button>
+            </div>
+        </div>
+    </section>
+    <section class="members">
+        <div class="title">
+            <em>{{ titles.member_subtitle }}</em>
+            <h1>{{ titles.member_title }}</h1>
+        </div>
+        <div class="members_container">
+            {% for i in members %}
+                <div style="background-image: url({{ i.img.url }});" class="members_content">
+                    <div class="info">
+                        <div>
+                            <h2>{{ i.name }}</h2>
+                            <span>{{ i.position }}</span>
+                        </div>
+                        <p>{{ i.text }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    <section style="background-image: url({{ menu.background.url }});" id="menu">
+        <div class="menu_container">
+            {% for category, product in product_by_category.items %}
+                <div class="menu_content">
+                    <div class="title">
+                        <em>{{ category.title }}</em>
+                        <h1>{{ category.subtitle }}</h1>
+                    </div>
+                    <ul>
+                        {% for i in product %}
+                            <li>
+                                <div class="info">
+                                    {% if i.recommend %}
+                                        <div class="recommend">
+                                            <h2>{{ i.name }}</h2>
+                                            <div>Recommend</div>
+                                        </div>
+                                    {% else %}
+                                        <h2>{{ i.name }}</h2>
+                                    {% endif %}
+                                    {% if i.new_price %}
+                                        <div class="new_price">
+                                            <span>${{ i.price }}</span>
+                                            <span>${{ i.new_price }}</span>
+                                        </div>
+                                    {% else %}
+                                        <span>${{ i.price }}</span>
+                                    {% endif %}
+                                </div>
+                                <p>{{ i.text }}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    <section id="review">
+        <div class="title">
+            <em>{{ titles.review_subtitle }}</em>
+            <h1>{{ titles.review_title }}</h1>
+        </div>
+        <div class="review_container">
+            {% for i in testimonials %}
+            <div class="review_content">
+                <div style="background-image: url({{ i.background.url }});" class="top">
+                    <div class="top_content">
+                        <img src="{{ i.img.url }}" alt="profile image" />
+                        <div>
+                            <h4>{{ i.name }}</h4>
+                            <em>{{ i.info }}</em>
+                        </div>
+                    </div>
+                </div>
+                <div class="info">
+                    <p>{{ i.text }}</p>
+                    <div class="rating">
+                        <span><span><strong>{{ i.rating }}</strong> Rating</span></span>
+                        <ul>
+                            {% for j in i.rating|func %}
+                                <li><i class="fa-solid fa-star"></i></li>
+                            {% endfor %} 
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    <section style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.45), rgba(188, 108, 37, 1)), url({{ contact_info.background.url }})" id="contact">
+        <div class="title">
+            <em>{{ titles.contact_subtitle }}</em>
+            <h1>{{ titles.contact_title }}</h1>
+        </div>
+        <div class="contact_container">
+            <form method='post'>
+                <div>
+                    {% csrf_token %}
+                    <label for="user_name">Name</label>
+                    <input placeholder="Alex" name="user_name" required/>
+                </div>
+                <div>
+                    <label for="user_email">Email Address</label>
+                    <input type="email" name="user_email" placeholder="alextyoou@gmail.com" required>
+                </div>
+                <div>
+                    <label for="user_message">How can we help?</label>
+                    <textarea name="user_message" placeholder="Message" required></textarea>
+                </div>
+                <button>{{ contact_info.button }}</button>
+            </form>
+            <iframe src="{{ contact_info.google_map }}" frameborder="0"></iframe>
+        </div>
+    </section>
+{% endblock %}

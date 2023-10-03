@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Barista Reservation{% endblock %}
+{% block paths %}
+    <ul>
+        <li><a href="/">{{ header.path1 }}</a></li>
+        <li><a href="/">{{ header.path2 }}</a></li>
+        <li><a href="/">{{ header.path3 }}</a></li>
+        <li><a href="/">{{ header.path4 }}</a></li>
+        <li><a href="/">{{ header.path5 }}</a></li>
+        <button><a href="">{{ header.path6 }} <i class="fa-solid fa-arrow-right"></i></a></button>
+    </ul>
+{% endblock %}
+    {% block body %}
+        <section style="background-image: url({{ reservation_info.background.url }});" class="reservation">
+                <div class="reservation_container">
+                    <div class="reservation_content">
+                        <div class="info">
+                            <div class="title">
+                                <em>{{ titles.reservation_subtitle }}</em>
+                                <h1>{{ titles.reservation_title }}</h1>
+                            </div>
+                            <form method='post'>
+                                {% csrf_token %}
+                                <div>
+                                    <input placeholder="Full Name" name='user_name' required/>
+                                    <input placeholder="Phone: +37444648088" name='user_phone' required/>
+                                    <input type="time" placeholder="18:30" name='user_time' required/>
+                                    <input type="date" name='user_date' required/>
+                                    <input type="number" placeholder="Number of People" name='user_count' required/>
+                                    <textarea placeholder="Comment(Optional)" name='user_message'></textarea>
+                                </div>
+                                <button>{{ reservation_info.button }}</button>
+                            </form>
+                        </div>
+                        <img src="{{ reservation_info.img.url }}" alt="Reservation" />
+                    </div>
+                </div>
+            </section>
+    {% endblock %}
